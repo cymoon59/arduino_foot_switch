@@ -9,6 +9,8 @@ const int KEYCODE_F8 = 0x41;
 const int KEYCODE_F9 = 0x42;
 
 const int KEYCODE_SPACE = 0x2c;
+const int KEYCODE_PAGEUP = 0x4B;
+const int KEYCODE_PAGEDOWN = 0x4E;
 
 const int pedalPin1 = 2;
 const int pedalPin2 = 3;
@@ -78,8 +80,18 @@ void loop()
   }
   
   if((pedalEvent1 == HIGH) || (pedalEvent2 == HIGH)) {
-    if(pedalEvent1 == HIGH) input(getLeftInput());
-    if(pedalEvent2 == HIGH) input(getRightInput());
+    if(pedalEvent1 == HIGH) {
+      input(getLeftInput());
+      if(mode != MODE_EMACS) {
+        releaseKey();
+      }
+    }
+    if(pedalEvent2 == HIGH) {
+      input(getRightInput());
+      if(mode != MODE_EMACS) {
+        releaseKey();
+      }
+    }
     lastPedalEvent1 = pedalEvent1;
     lastPedalEvent2 = pedalEvent2;
     setColor(50, 50, 0);
@@ -108,7 +120,7 @@ int getLeftInput() {
       keycode = KEYCODE_F8;
     break;
     case MODE_INTERNET:
-      keycode = KEYCODE_SPACE;
+      keycode = KEYCODE_PAGEUP;
     break;
   }
   return keycode;
@@ -124,7 +136,7 @@ int getRightInput() {
       keycode = KEYCODE_F9;
     break;
     case MODE_INTERNET:
-      keycode = KEYCODE_SPACE;
+      keycode = KEYCODE_PAGEDOWN;
     break;
   }
   return keycode;
